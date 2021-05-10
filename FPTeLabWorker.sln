@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FPTeLabService", "FPTeLabService\FPTeLabService.csproj", "{36E7D19F-BEDD-41A3-84CF-3536C83F2FB9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E93E5B88-68DA-4975-991D-1518E0CDFF08} = {E93E5B88-68DA-4975-991D-1518E0CDFF08}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FPTeLabLibarry", "FPTeLabLibarry\FPTeLabLibarry.csproj", "{E93E5B88-68DA-4975-991D-1518E0CDFF08}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{36E7D19F-BEDD-41A3-84CF-3536C83F2FB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36E7D19F-BEDD-41A3-84CF-3536C83F2FB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36E7D19F-BEDD-41A3-84CF-3536C83F2FB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36E7D19F-BEDD-41A3-84CF-3536C83F2FB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E93E5B88-68DA-4975-991D-1518E0CDFF08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E93E5B88-68DA-4975-991D-1518E0CDFF08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E93E5B88-68DA-4975-991D-1518E0CDFF08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E93E5B88-68DA-4975-991D-1518E0CDFF08}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A420EE57-1DB3-433F-B79D-0140086643AB}
+	EndGlobalSection
+EndGlobal

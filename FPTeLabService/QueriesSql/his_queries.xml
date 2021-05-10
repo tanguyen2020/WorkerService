@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Statements>
+  <Statement id="GetServices">
+    select DichVu_Id as ServiceId_His
+    , MaDichVu as ServiceCode_His
+    , TenDichVu as ServiceName_His
+    , NgayTao as CreateDate
+    , NgayCapNhat as ModifyDate
+    from DM_DichVu where isnull(TamNgung,'0') = '0'
+  </Statement>
+  <Statement id="GetDepartments">
+    select PhongBan_Id as DepartmentID
+    , MaPhongBan as DepartmentCode
+    , TenPhongBan as DepartmentName
+    , TamNgung as Enabled
+    , Cap as Level
+    , CapTren_Id as ParentID
+    , CoThucHienDichVu as IsMadeServices
+    from DM_PhongBan where TamNgung = '0'
+  </Statement>
+  <Statement id="GetPatientTypes">
+    select DoiTuong_Id as PatientType_Id
+    , MaDoiTuong as PatientTypeCode
+    , TenDoiTuong as PatientTypeName
+    , TamNgung as Enabled
+    from DM_DoiTuong where TamNgung = '0'
+  </Statement>
+  <Statement id="GetEmployees">
+    select NhanVien_Id as Employee_ID
+    , MaNhanVien as EmployeeCode
+    , TenNhanVien as EmployeeName
+    , case when PhongBan_Id is null then 0 else PhongBan_Id end as DepartmentID
+    , GioiTinh as Sex
+    , NgaySinh as DOB
+    , TamNgung as Enabled
+    , '' as Nationality
+    , DiaChi as Address
+    from NhanVien
+    where TamNgung = '0'
+  </Statement>
+  <Statement id="GetPatientHasNotSID">
+    
+  </Statement>
+</Statements>

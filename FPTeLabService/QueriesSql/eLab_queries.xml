@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Statements>
+  <Statement id="GetMappingService">
+    select * from MappingServiceELab_His
+  </Statement>
+  <Statement id="InsertDichVuMappingJson">
+    BEGIN TRANSACTION;
+    declare @JSON nvarchar(max) = N'' + @JSON_DATA + '';
+    insert into MappingServiceELab_His (ServiceId_His, ServiceCode_His, ServiceName_His, CreateDate)
+    SELECT ServiceId_His, ServiceCode_His, ServiceName_His, CreateDate
+    FROM OPENJSON(@JSON)
+    WITH (
+    ServiceId_His int
+    , ServiceCode_His varchar(100)
+    , ServiceName_His nvarchar(400)
+    , CreateDate datetime
+    )
+    COMMIT;
+  </Statement>
+  <Statement id="UpdateDichVuMappingJson">
+    BEGIN TRANSACTION;
+    declare @JSON nvarchar(max) = N'' + @JSON_DATA + '';
+    update MappingServiceELab_His set
+    ServiceCode_His = json.ServiceCode_His
+    , ServiceName_His = json.ServiceName_His
+    from OPENJSON(@JSON)
+    with (
+    ServiceCode_His varchar(10)
+    , ServiceName_His nvarchar(400)
+    ) json
+    where MappingServiceELab_His.ServiceCode_His = json.ServiceCode_His
+    COMMIT;
+  </Statement>
+  <Statement id="GetPatientWithCode">
+    select * from LabPatient where PatientCode = @PatientCode
+  </Statement>
+  <Statement id="GetAllPatient">
+    select * from LabPatient
+  </Statement>
+  <Statement id="GetAllCanLamSang">
+    select * from CLSYeuCau
+  </Statement>
+  <Statement id="GetAllLamSangChiTiet">
+    select * from CLSYeuCauChiTiet
+  </Statement>
+  <Statement id="InsertPatient">
+    insert into LabPatient
+    (
+    HospitalCode
+    , PatientCode
+    , IssueDate
+    , PatientName
+    , FirstName
+    , LastName
+    , DOB
+    , YOB
+    , Address
+    , Sex
+    , PatientID_His
+    , CreatedDate
+    , CreatedBy
+    , ModifiedDate
+    , ModifiedBy
+    )
+    values
+    (
+    @HospitalCode
+    , @PatientCode
+    , @IssueDate
+    , @PatientName
+    , @FirstName
+    , @LastName
+    , @DOB
+    , @YOB
+    , @Address
+    , @Sex
+    , @PatientID_His
+    , @CreatedDate
+    , @CreatedBy
+    , @ModifiedDate
+    , @ModifiedBy
+    )
+    SELECT CAST(SCOPE_IDENTITY() as int);
+  </Statement>
+  <Statement id="UpdatePatient">
+    update LabPatient set
+    IssueDate = @IssueDate
+    , PatientName = @PatientName
+    , FirstName = @FirstName
+    , LastName = @LastName
+    , DOB = @DOB
+    , YOB = @YOB
+    , Address = @Address
+    , Sex = @Sex
+    , PatientID_His = @PatientID_His
+    where PatientCode = @PatientCode
+  </Statement>
+  <Statement id="GetSubclinical">
+    select * from CLSYeuCau where DVYeuCau_Id_His = @DVYeuCau_Id_His
+  </Statement>
+  <Statement id="GetGetSubclinical_Detail">
+    select * from CLSYeuCauChiTiet where CLSYeuCau_Id = @CLSYeuCau_Id
+  </Statement>
+  <Statement id="InsertCLSYeuCau">
+    insert into CLSYeuCau
+    (
+    SoPhieuYeuCau
+    , NgayYeuCau
+    , ThoiGianYeuCau
+    , BacSiChiDinh_Id
+    , NoiThucHien_Id
+    , BenhNhan_Id
+    , DVYeuCau_Id_His
+    , DichVu_Id
+    )
+    values
+    (
+    @SoPhieuYeuCau
+    , @NgayYeuCau
+    , @ThoiGianYeuCau
+    , @BacSiChiDinh_Id
+    , @NoiThucHien_Id
+    , @BenhNhan_Id
+    , @DVYeuCau_Id_His
+    , @DichVu_Id
+    )
+    SELECT CAST(SCOPE_IDENTITY() as int);
+  </Statement>
+  <Statement id="UpdateCLSYeuCau">
+    update CLSYeuCau set
+    SoPhieuYeuCau = @SoPhieuYeuCau
+    , NgayYeuCau = @NgayYeuCau
+    , ThoiGianYeuCau = @ThoiGianYeuCau
+    , BacSiChiDinh_Id = @BacSiChiDinh_Id
+    , NoiThucHien_Id = @NoiThucHien_Id
+    , BenhNhan_Id = @BenhNhan_Id
+    , DichVu_Id = @DichVu_Id
+    where DVYeuCau_Id_His = @DVYeuCau_Id_His
+  </Statement>
+  <Statement id="InsertCLSYeuCauChiTiet">
+    insert into CLSYeuCauChiTiet
+    (
+    CLSYeuCau_Id
+    , DichVu_Id
+    )
+    values
+    (
+    @CLSYeuCau_Id
+    , @DichVu_Id
+    )
+  </Statement>
+  <Statement id="UpdateCLSYeuCauChiTiet">
+    update CLSYeuCauChiTiet set
+    CLSYeuCau_Id = @CLSYeuCau_Id
+    , DichVu_Id = @DichVu_Id
+    where YeuCauChiTiet_Id = @YeuCauChiTiet_Id
+  </Statement>
+  <Statement id="InsertEmployee">
+    Insert into DIC_Employee
+    (
+    Employee_ID
+    , EmployeeCode
+    , EmployeeName
+    , DepartmentID
+    , Sex
+    , DOB
+    , Address
+    , Nationality
+    , CreatedDate
+    , ModifiedDate
+    )
+    values
+    (
+    @Employee_ID
+    , @EmployeeCode
+    , @EmployeeName
+    , @DepartmentID
+    , @Sex
+    , @DOB
+    , @Address
+    , @Nationality
+    , @CreatedDate
+    , @ModifiedDate
+    )
+  </Statement>
+  <Statement id="GetEmployee">
+    select * from DIC_Employee
+  </Statement>
+  <Statement id="InsertEmployeeJson">
+    SET IDENTITY_INSERT [dbo].[DIC_Employee] ON
+    BEGIN TRANSACTION;
+    declare @JSON nvarchar(max) = N'' + @DATA + ''
+    Insert into DIC_Employee (Employee_ID, EmployeeCode, EmployeeName, DepartmentID, Address, Nationality, Enabled)
+    select Employee_ID, EmployeeCode, EmployeeName, DepartmentID, Address, Nationality, Enabled
+    from OPENJSON(@JSON)
+    WITH
+    (
+    Employee_ID int
+    , EmployeeCode varchar(20)
+    , EmployeeName nvarchar(500)
+    , DepartmentID int
+    , Address nvarchar(500)
+    , Nationality nvarchar(200)
+    , Enabled bit
+    )
+    COMMIT;
+    SET IDENTITY_INSERT [dbo].[DIC_Employee] OFF
+  </Statement>
+  <Statement id="UpdateEmployeeJson">
+    BEGIN TRANSACTION;
+    declare @JSON nvarchar(max) = N'' + @DATA + ''
+    update DIC_Employee set
+    EmployeeCode = json.EmployeeCode
+    , EmployeeName = json.EmployeeName
+    , DepartmentID = json.DepartmentID
+    , Address = json.Address
+    , Nationality = json.Nationality
+    , Enabled = json.Enabled
+    from OPENJSON(@JSON)
+    with
+    (
+     EmployeeCode varchar(20)
+    , EmployeeName nvarchar(500)
+    , DepartmentID int
+    , Address nvarchar(500)
+    , Nationality nvarchar(200)
+    , Enabled bit
+    ) json
+    where DIC_Employee.EmployeeCode = json.EmployeeCode
+    COMMIT;
+  </Statement>
+  <Statement id="GetDepartment">
+    select * from DIC_Department
+  </Statement>
+  <Statement id="InsertDepartmentJson">
+    SET IDENTITY_INSERT [dbo].[DIC_Department] ON
+    BEGIN TRANSACTION;
+    declare @JSON nvarchar(max) = N'' + @JSON_DATA + '';
+    Insert into DIC_Department (DepartmentID, DepartmentCode, DepartmentName, Level, ParentID, IsMadeServices, Enabled)
+    select DepartmentID, DepartmentCode, DepartmentName, Level, ParentID, IsMadeServices, Enabled
+    from OPENJSON(@JSON)
+    WITH
+    (
+    DepartmentID int
+    , DepartmentCode varchar(20)
+    , DepartmentName nvarchar(500)
+    , Level int
+    , ParentID int
+    , IsMadeServices bit
+    , Enabled bit
+    )
+    COMMIT;
+    SET IDENTITY_INSERT [dbo].[DIC_Department] OFF
+  </Statement>
+  <Statement id="UpdateDepartmentJson">
+    BEGIN TRANSACTION;
+    declare @JSON nvarchar(max) = N'' + @JSON_DATA + '';
+    Update DIC_Department set
+    DepartmentCode = json.DepartmentCode
+    , DepartmentName = json.DepartmentName
+    , Level = json.Level
+    , ParentID = json.ParentID
+    , IsMadeServices = json.IsMadeServices
+    , Enabled = json.Enabled
+    from OPENJSON(@JSON)
+    with
+    (
+    DepartmentCode varchar(20)
+    , DepartmentName nvarchar(500)
+    , Level int
+    , ParentID int
+    , IsMadeServices bit
+    , Enabled bit
+    ) json
+    where DIC_Department.DepartmentCode = json.DepartmentCode
+    COMMIT;
+  </Statement>
+  <Statement id="GetPatientType">
+    select * from DIC_PatientType
+  </Statement>
+  <Statement id="InsertPatientTypeJson">
+    SET IDENTITY_INSERT [dbo].[DIC_PatientType] ON
+    BEGIN TRANSACTION;
+    declare @JSON nvarchar(max) = N'' + @JSON_DATA + '';
+    Insert into DIC_PatientType (PatientType_Id, PatientTypeCode, PatientTypeName, Enabled)
+    select PatientType_Id, PatientTypeCode, PatientTypeName, Enabled
+    from OPENJSON(@JSON)
+    WITH
+    (
+    PatientType_Id int
+    , PatientTypeCode varchar(20)
+    , PatientTypeName nvarchar(500)
+    , Enabled bit
+    )
+    COMMIT;
+    SET IDENTITY_INSERT [dbo].[DIC_PatientType] OFF
+  </Statement>
+  <Statement id="UpdatePatientTypeJson">
+    BEGIN TRANSACTION;
+    declare @JSON nvarchar(max) = N'' + @JSON_DATA + '';
+    update DIC_PatientType set
+    PatientTypeCode = json.PatientTypeCode
+    , PatientTypeName = json.PatientTypeName
+    , Enabled = json.Enabled
+    from OPENJSON(@JSON)
+    with
+    (
+    PatientTypeCode varchar(20)
+    , PatientTypeName nvarchar(500)
+    , Enabled bit
+    ) json
+    where DIC_PatientType.PatientTypeCode = json.PatientTypeCode
+    COMMIT;
+  </Statement>
+  <Statement id="GetPatient">
+    select * from LabPatient
+  </Statement>
+</Statements>
